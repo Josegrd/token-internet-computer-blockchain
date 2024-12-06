@@ -4,4 +4,5 @@ export interface _SERVICE {
   'getSymbol' : () => Promise<string>,
   'payOut' : () => Promise<string>,
   'totalSupply' : () => Promise<bigint>,
+  'transfer' : (arg_0: Principal, arg_1: bigint) => Promise<string>,
 }

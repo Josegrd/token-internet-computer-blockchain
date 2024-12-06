@@ -4,6 +4,7 @@ export const idlFactory = ({ IDL }) => {
     'getSymbol' : IDL.Func([], [IDL.Text], ['query']),
     'payOut' : IDL.Func([], [IDL.Text], []),
     'totalSupply' : IDL.Func([], [IDL.Nat], ['query']),
+    'transfer' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
   });
 };
 export const init = ({ IDL }) => { return []; };
