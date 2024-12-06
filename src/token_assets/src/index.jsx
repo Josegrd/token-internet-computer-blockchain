@@ -8,19 +8,26 @@ const init = async () => {
   const authClient = await AuthClient.create();
 
   if(authClient.isAuthenticated()) {
-    handleAuthenticated()
+    handleAuthenticated(authClient)
   }else{
     await authClient.login({
     identityProvider: "https://identity.ic0.app/#authorize",
     onSuccess:() => {
-      handleAuthenticated();
+      handleAuthenticated(authClient);
     }
   });
   }
 
   
 
-  async function handleAuthenticated() {
+  async function handleAuthenticated(authClient) {
+      // to see identity after login (after deployed) ===
+      const identity = await authClient.getIdentity();
+      const userPricipal = identity._principal.toString();
+      console.log(userPricipal);
+      // to check the balance authenticated user
+      // ================================================
+
       ReactDOM.render(<App />, document.getElementById("root"));
   }
 }

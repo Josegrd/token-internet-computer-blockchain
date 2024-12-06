@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { token } from "../../../declarations/token/index";
+import { token, canisterId, createActor } from "../../../declarations/token";
+import {AuthClient} from "@dfinity/auth-client"
 
 function Faucet() {
   const [isDisable, setDisable] = useState(false);
@@ -7,7 +8,20 @@ function Faucet() {
 
   async function handleClick(event) {
     setDisable(true)
-    setButtonText(await token.payOut());
+
+    // deploy to blockchain first =====
+    const authClient = await AuthClient.create();
+    const identity = await authClient.getIdentity();
+
+    const authenticatedCanister = createActor(canisterId, {
+       agentOptions: { identity } 
+    });
+    // ================================
+
+    // after deploy change payOut to
+    // setButtonText(await authenticatedCanister.payOut());
+
+    setButtonText(await token.payOut()); // comment this after deploy
     // setDisable(false)
 
   }

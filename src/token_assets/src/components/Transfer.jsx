@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { token } from "../../../declarations/token";
 import { Principal } from "@dfinity/principal";
+import { token, canisterId, createActor } from "../../../declarations/token";
+import {AuthClient} from "@dfinity/auth-client"
 
 function Transfer() {
   const [recipientId, setRecipient] = useState("");
@@ -12,6 +13,19 @@ function Transfer() {
   async function handleClick() {
     setHidden(true)
     setDisabled(true)
+
+    // deploy to blockchain first =====
+    const authClient = await AuthClient.create();
+    const identity = await authClient.getIdentity();
+
+    const authenticatedCanister = createActor(canisterId, {
+       agentOptions: { identity } 
+    });
+    // ================================
+    // after deploy change variable result to
+    // let result = await authenticatedCanister.transfer(recipient, amountToTransfer);
+
+
     const recipient = Principal.fromText(recipientId);
     const amountToTransfer = Number(amount)
     let result = await token.transfer(recipient, amountToTransfer);
